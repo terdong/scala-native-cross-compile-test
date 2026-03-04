@@ -43,6 +43,12 @@ object sys {
   def GetTickCount64(): Long = extern
 }
 
+@extern
+object win {
+  // 콘솔 출력 코드 페이지를 설정하는 함수
+  def SetConsoleOutputCP(codePage: Int): Int = extern
+}
+
 @main def run(): Unit = {
   println("Hello Scala Native!")
 
@@ -50,9 +56,13 @@ object sys {
 
   if (os.contains("win")) {
     // Windows 로직
+    win.SetConsoleOutputCP(65001)
     val uptimeMs = sys.GetTickCount64()
     val totalSeconds = uptimeMs / 1000
     printUptime(totalSeconds)
+
+    println("\n계속하려면 엔터 키를 누르세요...")
+    scala.io.StdIn.readLine()
   } else {
     // Linux 로직
     // val info = stackalloc[Byte](128)
