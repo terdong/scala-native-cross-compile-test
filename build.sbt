@@ -10,11 +10,15 @@ logLevel := Level.Info
 // import to add Scala Native options
 import scala.scalanative.build._
 
+libraryDependencies += "xyz.matthieucourt" %%% "layoutz" % "0.7.0"
+
 // defaults set with common options shown
 nativeConfig ~= { c =>
   c.withLTO(LTO.thin)
-    .withMode(Mode.releaseFast)
+    .withMode(Mode.debug)
     .withGC(GC.immix)
+    .withCompileOptions(Seq("-U_FORTIFY_SOURCE", "-O2")) // -O2를 명시하여 경고 제거
+    .withLinkingOptions(Seq("-Wl,--export-dynamic")) // 모든 심볼
 }
 
 // lazy val deploy = taskKey[Unit]("배포용 바이너리를 루트의 dist 폴더로 집결시킵니다.")
