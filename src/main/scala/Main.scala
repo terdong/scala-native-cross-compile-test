@@ -29,20 +29,18 @@
 //   }
 // }
 
-
-
-import scala.scalanative.unsafe.*
 import scala.scalanative.libc.*
+import scala.scalanative.unsafe.*
 
 // 플랫폼에 따라 다른 외부 함수 호출
 @extern
 object sys {
   // Linux용
-  def sysinfo(info: Ptr[Byte]): Int = extern
+  // def sysinfo(info: Ptr[Byte]): Int = extern
 
   // Windows용 (kernel32.dll의 GetTickCount64 사용)
   // 부팅 후 경과된 시간을 밀리초(ms) 단위로 반환합니다.
-  // def GetTickCount64(): Long = extern
+  def GetTickCount64(): Long = extern
 }
 
 @main def run(): Unit = {
@@ -52,16 +50,16 @@ object sys {
 
   if (os.contains("win")) {
     // Windows 로직
-    // val uptimeMs = sys.GetTickCount64()
-    // val totalSeconds = uptimeMs / 1000
-    // printUptime(totalSeconds)
+    val uptimeMs = sys.GetTickCount64()
+    val totalSeconds = uptimeMs / 1000
+    printUptime(totalSeconds)
   } else {
     // Linux 로직
-    val info = stackalloc[Byte](128)
-    if (sys.sysinfo(info) == 0) {
-      val totalSeconds = !(info.asInstanceOf[Ptr[Long]])
-      printUptime(totalSeconds)
-    }
+    // val info = stackalloc[Byte](128)
+    // if (sys.sysinfo(info) == 0) {
+    // val totalSeconds = !(info.asInstanceOf[Ptr[Long]])
+    // printUptime(totalSeconds)
+    // }
   }
 }
 
