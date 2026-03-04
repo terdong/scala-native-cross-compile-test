@@ -1,0 +1,37 @@
+name: Windows Build
+
+on:
+  push:
+    branches: [ main ] # 메인 브랜치에 푸시할 때마다 실행
+  workflow_dispatch:   # 수동으로 실행하고 싶을 때 사용
+
+jobs:
+  build:
+    runs-on: windows-latest # 실제 윈도우 서버에서 실행
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: 'sbt'
+
+    - name: Install LLVM (Clang)
+      run: |
+        choco install llvm
+        echo "C:\Program Files\LLVM\bin" >> $env:GITHUB_PATH
+
+    - name: Build Windows Binary
+      run: |
+        # sbt로 nativeLinkReleaseFast 실행
+        sbt nativeLinkReleaseFast
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: hello-native
+        # 빌드된 .exe 파일 경로 (프로젝트명-out.exe 형태로 생성됨)
+        path: target/scala-3.3.7/hello-native.exe
