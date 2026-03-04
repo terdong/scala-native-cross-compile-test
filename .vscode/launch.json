@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "scala",
+      "request": "launch",
+      "name": "Main",
+      "mainClass": "Main",
+      "buildTarget": "file:/home/darren/scala_projects/scala_native_test/scala-native-seed-project/?id=scala-native-seed-project",
+      "args": [],
+      "jvmOptions": [],
+      "env": {}
+    },
+    {
+      "type": "scala",
+      "request": "launch",
+      "name": "run",
+      "mainClass": "run",
+      "buildTarget": "file:/home/darren/scala_projects/scala_native_test/scala-native-seed-project/?id=scala-native-seed-project",
+      "args": [],
+      "jvmOptions": [],
+      "env": {}
+    }
+  ]
+}
